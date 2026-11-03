@@ -183,18 +183,29 @@ static wstring statePath() {
     size_t len = 0;
     _wdupenv_s(&appdata, &len, L"APPDATA");
     wstring dir = appdata ? appdata : L".";
-    free(appdata);
     dir += L"\\NudgeBell";
     wstring ini = dir + (g_testMode ? L"\\state.test.ini" : L"\\state.ini");
     CreateDirectoryW(dir.c_str(), nullptr);
 
-    // 从旧版本（VibeFocusLite）迁移一次数据
-    if (!g_testMode && GetFileAttributesW(ini.c_str()) == INVALID_FILE_ATTRIBUTES) {
-        wstring oldIni = appdata ? wstring(appdata) + L"\\VibeFocusLite\\state.ini" : L"";
-        if (!oldIni.empty() && GetFileAttributesW(oldIni.c_str()) != INVALID_FILE_ATTRIBUTES) {
-            CopyFileW(oldIni.c_str(), ini.c_str(), FALSE);
+    // 从旧版本（VibeFocusLite）迁移数据，只做一次。
+    // 用标记文件记住"已经迁过"——否则用户每次删档、每次重开，旧数据都会复活。
+    wstring flag = dir + L"\\migrated";
+    bool migrated = GetFileAttributesW(flag.c_str()) != INVALID_FILE_ATTRIBUTES;
+    if (!g_testMode && !migrated) {
+        if (GetFileAttributesW(ini.c_str()) == INVALID_FILE_ATTRIBUTES && appdata) {
+            wstring oldIni = wstring(appdata) + L"\\VibeFocusLite\\state.ini";
+            if (GetFileAttributesW(oldIni.c_str()) != INVALID_FILE_ATTRIBUTES) {
+                CopyFileW(oldIni.c_str(), ini.c_str(), FALSE);
+                // 迁完就把旧文件改名收走，免得哪天用户把整个 NudgeBell 目录删了又复活一遍
+                MoveFileW(oldIni.c_str(), (oldIni + L".migrated").c_str());
+            }
         }
+        HANDLE h = CreateFileW(flag.c_str(), GENERIC_WRITE, 0, nullptr,
+                               CREATE_ALWAYS, FILE_ATTRIBUTE_HIDDEN, nullptr);
+        if (h != INVALID_HANDLE_VALUE) CloseHandle(h);
     }
+
+    free(appdata);          // 必须在最后一次使用之后
     return ini;
 }
 
