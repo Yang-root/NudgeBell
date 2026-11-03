@@ -178,6 +178,8 @@ static long long nextGapMs() {
 }
 
 // ---------------- 持久化 ----------------
+static wstring g_stateFile;          // 缓存主数据文件路径，供"档被删了吗"检查用
+
 static wstring statePath() {
     wchar_t* appdata = nullptr;
     size_t len = 0;
@@ -206,6 +208,7 @@ static wstring statePath() {
     }
 
     free(appdata);          // 必须在最后一次使用之后
+    g_stateFile = ini;
     return ini;
 }
 
@@ -1955,8 +1958,54 @@ static void restoreSession() {
     saveState(true);
 }
 
+// 用户把 state.ini 删了，就该真的归零。
+// 不这么干的话，进程会每 15 秒把内存里的旧状态写回去 —— 删档等于白删。
+// 这是之前"删了配置文件数据还在"的真凶。
+static bool g_stateResetDone = false;
+
+// 数据文件没了，或者被清成 0 字节 —— 都算用户要清空
+static bool stateFileGone() {
+    if (g_stateFile.empty()) return false;
+    WIN32_FILE_ATTRIBUTE_DATA fad = {};
+    if (!GetFileAttributesExW(g_stateFile.c_str(), GetFileExInfoStandard, &fad)) return true;
+    return fad.nFileSizeLow == 0;
+}
+
+static void resetStateIfFileDeleted() {
+    if (g_testMode || g_stateFile.empty()) return;                       // 测试模式不碰
+    bool gone = stateFileGone();
+    if (!gone) {
+        g_stateResetDone = false;
+        return;                                          // 档还在，正常
+    }
+    if (g_stateResetDone) return;        // 只清一次：万一写盘失败，别把用户数据反复清空
+    g_stateResetDone = true;
+
+    bool keepAuto = st.autoStart;        // 开机自启是注册表副作用，不跟着数据一起清
+    st = AppState();                     // 设置、统计、历史全部回默认
+    st.autoStart = keepAuto;
+    st.todayDate = todayKey();
+    rt.running = false;
+    rt.phase = 0;
+    rt.phaseStart = rt.phaseEnd = 0;
+    rt.phaseLeftMs = 0;
+    rt.nextBellAt = rt.lastBellAt = 0;
+    rt.remainingMs = 60000;
+    rt.cardVisible = false;
+    rt.cardManual = false;
+    rt.viewMonth = 0;
+    rt.scrollY = 0.0f;
+    rt.mainY = 0.0f;
+    rt.activeSlider = -1;
+    rt.dirty = false;
+    hideCardPopup();
+    saveState(true);                     // 立刻写一份完整的默认档，别留个 0 字节文件在那
+    toast(L"数据已清空，恢复默认设置");
+}
+
 // 退出前先落成"暂停"，下次打开不会接着跑
 static void markPausedOnExit() {
+    resetStateIfFileDeleted();           // 先看用户是不是删了档，别把旧数据又写回去
     rt.running = false;
     st.paused = true;
     rt.phase = 0;
@@ -2308,6 +2357,7 @@ static void onCommand(int id) {
 // ============================================================
 static long long g_lastTick = 0;
 static long long g_lastSave = 0;
+static long long g_lastDelCheck = 0;
 static unsigned g_frame = 0;
 
 static void tick() {
@@ -2315,6 +2365,9 @@ static void tick() {
     long long dt = g_lastTick ? now - g_lastTick : 33;
     if (dt > 5000) dt = 5000;
     g_lastTick = now;
+
+    // 每 0.8 秒看一眼数据文件还在不在。用户删档要当场生效，不能等 15 秒的存盘周期。
+    if (now - g_lastDelCheck > 800) { resetStateIfFileDeleted(); g_lastDelCheck = now; }
 
     ensureToday();
 
@@ -2343,7 +2396,11 @@ static void tick() {
     }
     if (!rt.toastText.empty() && now > rt.toastUntil) rt.toastText.clear();
 
-    if (now - g_lastSave > 15000) { saveState(false); g_lastSave = now; }
+    if (now - g_lastSave > 15000) {
+        resetStateIfFileDeleted();      // 档被用户删了就先归零，别再把旧数据写回去
+        saveState(false);
+        g_lastSave = now;
+    }
 
     // 托盘提示
     int sec = (int)(now / 1000);
@@ -2673,6 +2730,8 @@ int WINAPI wWinMain(HINSTANCE hInst, HINSTANCE, LPWSTR, int) {
 
     loadState();
     ensureToday();
+    // 启动时本来就没有数据文件（全新用户/刚删过），不要弹出"已重置"的提示
+    if (stateFileGone()) g_stateResetDone = true;
     initFonts();
 
     if (wcsstr(GetCommandLineW(), L"--shot")) {
