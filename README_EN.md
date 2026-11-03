@@ -52,7 +52,7 @@ seconds. Click anywhere to dismiss; it never steals focus from what you're typin
 
 Download `NudgeBell.exe`, double-click. No installer, no runtime.
 
-**916 KB / ~22 MB RAM / instant start** — a thing that occasionally goes *ding*
+**916 KB / ≈22 MB RAM / instant start** — a thing that occasionally goes *ding*
 has no business eating half a browser.
 
 > Windows will flag it on first run (the exe is unsigned): **More info → Run anyway**.
