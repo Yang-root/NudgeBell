@@ -1040,15 +1040,32 @@ static int getPngEncoder(CLSID* clsid) {
     return found;
 }
 
-static void exportPng(const wchar_t* path) {
+// 高倍渲染后降采样：既保留细节，又不会在网页上变成一张占满屏幕的巨图
+static void saveScaled(Bitmap& src, const wchar_t* path, int outW) {
+    CLSID png;
+    if (getPngEncoder(&png) < 0) return;
+    if (outW <= 0 || outW >= src.GetWidth()) { src.Save(path, &png, nullptr); return; }
+    int sw = src.GetWidth(), sh = src.GetHeight();
+    int outH = (int)((long long)sh * outW / sw);
+    Bitmap out(outW, outH, PixelFormat32bppPARGB);
+    {
+        Graphics g(&out);
+        g.SetInterpolationMode(InterpolationModeHighQualityBicubic);
+        g.SetPixelOffsetMode(PixelOffsetModeHighQuality);
+        g.SetSmoothingMode(SmoothingModeAntiAlias);
+        g.DrawImage(&src, Rect(0, 0, outW, outH), 0, 0, sw, sh, UnitPixel);
+    }
+    out.Save(path, &png, nullptr);
+}
+
+static void exportPng(const wchar_t* path, int outW = 0) {
     int w = (int)(CW * S), h = (int)(CH * S);
     Bitmap bmp(w, h, PixelFormat32bppPARGB);
     {
         Graphics g(&bmp);
         renderAll(g);
     }
-    CLSID png;
-    if (getPngEncoder(&png) >= 0) bmp.Save(path, &png, nullptr);
+    saveScaled(bmp, path, outW);
 }
 
 static void paint(HWND hwnd) {
@@ -1683,7 +1700,7 @@ static void captureRect(const RECT& r, const wchar_t* path) {
     ReleaseDC(nullptr, screen);
 }
 
-static void exportCardPng(const wchar_t* path) {
+static void exportCardPng(const wchar_t* path, int outW = 0) {
     float bodyH = cardBodyHeight();
     int w = (int)((CARD_W + CARD_PAD * 2) * S);
     int h = (int)((bodyH + CARD_PAD * 2) * S);
@@ -1698,8 +1715,7 @@ static void exportCardPng(const wchar_t* path) {
         g.ScaleTransform(S, S);
         drawCardBody(g, bodyH);
     }
-    CLSID png;
-    if (getPngEncoder(&png) >= 0) bmp.Save(path, &png, nullptr);
+    saveScaled(bmp, path, outW);
 }
 
 
@@ -2696,19 +2712,19 @@ int WINAPI wWinMain(HINSTANCE hInst, HINSTANCE, LPWSTR, int) {
         rt.lastBellAt = nowMs() - 220000;
         rt.nextBellAt = nowMs() + 160000;
 
-        exportPng(L"preview.png");
+        exportPng(L"preview.png", 480);
 
         rt.viewMonth = -1; // 上个月：整月数据，色阶完整
         rt.mainY = 9999;   // 每张都要重设，否则只会被夹到上一张的上限
-        exportPng(L"preview-heat.png");
+        exportPng(L"preview-heat.png", 480);
 
         rt.viewMonth = 0;  // 本月：验证今天的高亮圈与"本月"标题
         rt.mainY = 9999;
-        exportPng(L"preview-heat-this.png");
+        exportPng(L"preview-heat-this.png", 480);
 
         rt.viewMonth = -3; // 6 行月份：验证卡片变高后排版不错位
         rt.mainY = 9999;
-        exportPng(L"preview-heat-6rows.png");
+        exportPng(L"preview-heat-6rows.png", 480);
 
         rt.mainY = 0;
         rt.viewMonth = 0;
@@ -2716,7 +2732,7 @@ int WINAPI wWinMain(HINSTANCE hInst, HINSTANCE, LPWSTR, int) {
         // 暂停态：主按钮是渐变填充，用于检查渐变是否有接缝
         rt.running = false;
         st.paused = true;
-        exportPng(L"preview-paused.png");
+        exportPng(L"preview-paused.png", 480);
         rt.running = true;
         st.paused = false;
 
@@ -2728,23 +2744,23 @@ int WINAPI wWinMain(HINSTANCE hInst, HINSTANCE, LPWSTR, int) {
         rt.phaseStart = nowMs() - 8 * 60000;
         rt.phaseEnd = nowMs() + 11 * 60000 + 30000;
         rt.mainY = 0;
-        exportPng(L"preview-break.png");
+        exportPng(L"preview-break.png", 480);
         rt.phase = 0;
 
         rt.page = 1;
         rt.scrollY = 0;
         rt.dirty = false;
-        exportPng(L"preview-settings.png");
+        exportPng(L"preview-settings.png", 480);
         rt.dirty = true;                      // 演示"有改动未保存"
-        exportPng(L"preview-settings-dirty.png");
+        exportPng(L"preview-settings-dirty.png", 480);
         rt.dirty = false;
 
         st.mode = 1;                          // 定时模式：只有一根滑杆
         rt.scrollY = 0;
-        exportPng(L"preview-settings-fixed.png");
+        exportPng(L"preview-settings-fixed.png", 480);
         st.mode = 0;
         rt.scrollY = 620;
-        exportPng(L"preview-settings2.png");
+        exportPng(L"preview-settings2.png", 480);
         rt.scrollY = 0;
         rt.page = 0;
 
@@ -2757,7 +2773,7 @@ int WINAPI wWinMain(HINSTANCE hInst, HINSTANCE, LPWSTR, int) {
         rt.cardManual = false;
         rt.cardStartAt = nowMs();
         rt.cardUntil = nowMs() + 4000;
-        exportCardPng(L"preview-card.png");
+        exportCardPng(L"preview-card.png", 460);
 
         // 休息提醒卡
         rt.cardKind = L"该休息了";
@@ -2765,7 +2781,7 @@ int WINAPI wWinMain(HINSTANCE hInst, HINSTANCE, LPWSTR, int) {
         rt.cardSound = vf::soundName(0);
         rt.cardStartAt = nowMs();
         rt.cardUntil = nowMs() + 4000;
-        exportCardPng(L"preview-breakcard.png");
+        exportCardPng(L"preview-breakcard.png", 460);
 
         GdiplusShutdown(g_gdiToken);
         return 0;
