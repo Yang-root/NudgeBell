@@ -231,7 +231,7 @@ static void loadState() {
     st.bells = gi(L"bells", 0);
     for (int i = 0; i < 12; i++) st.enabled[i] = gi((L"on" + to_wstring(i)).c_str(), 1) != 0;
     st.hist.clear();
-    for (int i = 0; i < 40; i++) {
+    for (int i = 0; i < 400; i++) {          // 与热力图的 12 个月翻页对齐
         wstring v = gs((L"h" + to_wstring(i)).c_str());
         if (v.empty()) continue;
         size_t c = v.find(L',');
@@ -272,7 +272,7 @@ static void saveState(bool withSettings = true) {
     WritePrivateProfileStringW(L"vibe", L"todayDate", st.todayDate.c_str(), p.c_str());
     WritePrivateProfileStringW(L"vibe", L"focusMs", to_wstring(st.focusMs).c_str(), p.c_str());
     si(L"bells", st.bells);
-    for (size_t i = 0; i < st.hist.size() && i < 40; i++) {
+    for (size_t i = 0; i < st.hist.size() && i < 400; i++) {
         wstring v = st.hist[i].date + L"," + to_wstring(st.hist[i].ms);
         WritePrivateProfileStringW(L"vibe", (L"h" + to_wstring(i)).c_str(), v.c_str(), p.c_str());
     }
@@ -286,7 +286,7 @@ static void ensureToday() {
         for (auto& d : st.hist) if (d.date == st.todayDate) { d.ms = st.focusMs; found = true; }
         if (!found) st.hist.push_back({ st.todayDate, st.focusMs });
         sort(st.hist.begin(), st.hist.end(), [](const DayRec& a, const DayRec& b) { return a.date < b.date; });
-        if (st.hist.size() > 40) st.hist.erase(st.hist.begin(), st.hist.begin() + (st.hist.size() - 40));
+        if (st.hist.size() > 400) st.hist.erase(st.hist.begin(), st.hist.begin() + (st.hist.size() - 400));
     }
     st.todayDate = k;
     st.focusMs = 0;
@@ -3219,6 +3219,23 @@ int WINAPI wWinMain(HINSTANCE hInst, HINSTANCE, LPWSTR, int) {
             st.focusCyc = 90;
             st.breakCyc = 20;
             saveState();
+        }
+
+        // ---- 历史记录保留窗口：必须能翻满 12 个月，不能被 40 天截断 ----
+        {
+            st.hist.clear();
+            for (int i = 0; i < 300; i++) {
+                wchar_t buf[32];
+                swprintf_s(buf, L"%04d-%02d-%02d", 2025, 1 + i / 28, 1 + i % 28);
+                st.hist.push_back({ buf, (long long)(i + 1) * 60000LL });
+            }
+            saveState();
+            st.hist.clear();
+            loadState();
+            char b[128];
+            sprintf(b, "存了 300 天，读回 %d 天", (int)st.hist.size());
+            log.push_back(b);
+            chk("历史能完整存下 300 天", (int)st.hist.size() == 300);
         }
 
         // ---- 盲盒可以设成"3~6 分钟之间随机" ----
