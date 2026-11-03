@@ -1,15 +1,11 @@
 # NudgeBell · 回神
 
+**简体中文** ｜ [English](README_EN.md)
+
 ![size](https://img.shields.io/badge/size-916%20KB-informational)
 ![platform](https://img.shields.io/badge/platform-Windows%2010%20%2F%2011-blue)
 ![language](https://img.shields.io/badge/C%2B%2B-17-00599C)
 ![license](https://img.shields.io/badge/license-MIT-green)
-
-**A randomized focus bell for your desktop.** It rings at an unpredictable
-moment — that uncertainty is the whole point. No notifications you can tune out,
-no streak guilt. Just a small nudge, at a time you didn't choose, that pulls you
-back to whatever you were doing. Native Win32 + GDI+, 916 KB, ~22 MB RAM, no
-runtime to install.
 
 > 学习随机提示音。走神的时候，轻轻推你一下。
 
