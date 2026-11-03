@@ -79,6 +79,18 @@ looking at the screen. Actual quit is in the tray menu.
 
 ---
 
+## Settings
+
+One page for everything: random range, focus/break lengths, which of the 12 sounds
+are in the pool, volume, ambient bed, tray behaviour.
+
+Every number has three ways to change it — drag the slider, tap `−`, tap `+`. Nothing
+is written to disk until you hit **Save** in the bottom bar.
+
+![Settings](docs/screenshot-settings.png)
+
+---
+
 ## Build it yourself
 
 Requires MinGW-w64 (g++ 11+), then `./build.sh` produces the 916 KB exe.
