@@ -4,9 +4,9 @@
 
 **A focus bell that never tells you when it'll ring.** It catches you the second you drift.
 
-![size](https://img.shields.io/badge/size-916%20KB-informational) ![platform](https://img.shields.io/badge/platform-Windows%2010%20%2F%2011-blue) ![C++17](https://img.shields.io/badge/C%2B%2B-17-00599C) ![license](https://img.shields.io/badge/license-MIT-green)
+![size](https://img.shields.io/badge/size-919%20KB-informational) ![platform](https://img.shields.io/badge/platform-Windows%2010%20%2F%2011-blue) ![C++17](https://img.shields.io/badge/C%2B%2B-17-00599C) ![license](https://img.shields.io/badge/license-MIT-green)
 
-[![⬇ Download](https://img.shields.io/badge/%E2%AC%87_Download-916%20KB-2ea44f?style=for-the-badge)](https://github.com/Yang-root/NudgeBell/raw/main/NudgeBell.exe)
+[![⬇ Download](https://img.shields.io/badge/%E2%AC%87_Download-919%20KB-2ea44f?style=for-the-badge)](https://github.com/Yang-root/NudgeBell/raw/main/NudgeBell.exe)
 
 [Install](#install) · [How it works](#the-three-pieces) · [Screenshots](#also-in-the-box) · [Internals](docs/tech.md)
 
@@ -52,9 +52,9 @@ seconds. Click anywhere to dismiss; it never steals focus from what you're typin
 
 ## Install
 
-[Download](https://github.com/Yang-root/NudgeBell/raw/main/NudgeBell.exe) (916 KB) and double-click. No installer, no runtime.
+[Download](https://github.com/Yang-root/NudgeBell/raw/main/NudgeBell.exe) (919 KB) and double-click. No installer, no runtime.
 
-**916 KB / ≈22 MB RAM / instant start** — a thing that occasionally goes *ding*
+**919 KB / ≈22 MB RAM / instant start** — a thing that occasionally goes *ding*
 has no business eating half a browser.
 
 > Windows will flag it on first run (the exe is unsigned): **More info → Run anyway**.
@@ -93,7 +93,7 @@ is written to disk until you hit **Save** in the bottom bar.
 
 ## Build it yourself
 
-Requires MinGW-w64 (g++ 11+), then `./build.sh` produces the 916 KB exe.
+Requires MinGW-w64 (g++ 11+), then `./build.sh` produces the 919 KB exe.
 
 Hand-written Win32 + GDI+, C++17, statically linked — no .NET, no Qt, no Electron,
 no browser engine. Internals, how the 12 sounds are synthesised, and what the 67

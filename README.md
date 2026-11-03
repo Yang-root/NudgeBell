@@ -4,9 +4,9 @@
 
 **一个不知道什么时候会响的专注提示音。** 走神的那一秒，把你拽回来。
 
-![size](https://img.shields.io/badge/size-916%20KB-informational) ![platform](https://img.shields.io/badge/platform-Windows%2010%20%2F%2011-blue) ![C++17](https://img.shields.io/badge/C%2B%2B-17-00599C) ![license](https://img.shields.io/badge/license-MIT-green)
+![size](https://img.shields.io/badge/size-919%20KB-informational) ![platform](https://img.shields.io/badge/platform-Windows%2010%20%2F%2011-blue) ![C++17](https://img.shields.io/badge/C%2B%2B-17-00599C) ![license](https://img.shields.io/badge/license-MIT-green)
 
-[![⬇ 下载 NudgeBell.exe](https://img.shields.io/badge/%E2%AC%87_%E4%B8%8B%E8%BD%BD-916%20KB-2ea44f?style=for-the-badge)](https://github.com/Yang-root/NudgeBell/raw/main/NudgeBell.exe)
+[![⬇ 下载 NudgeBell.exe](https://img.shields.io/badge/%E2%AC%87_%E4%B8%8B%E8%BD%BD-919%20KB-2ea44f?style=for-the-badge)](https://github.com/Yang-root/NudgeBell/raw/main/NudgeBell.exe)
 
 [装起来](#装) · [它怎么工作](#三个东西) · [截图](#还有什么) · [技术细节](docs/tech.md)
 
@@ -43,9 +43,9 @@ NudgeBell 不告诉你时间。每响一次，间隔当场重新抽一次。你�
 
 ## 装
 
-[点这里下载](https://github.com/Yang-root/NudgeBell/raw/main/NudgeBell.exe)（916 KB），双击就行。没有安装包，没有运行时。
+[点这里下载](https://github.com/Yang-root/NudgeBell/raw/main/NudgeBell.exe)（919 KB），双击就行。没有安装包，没有运行时。
 
-**916 KB / 22 MB 内存 / 瞬间启动** —— 一个「偶尔叮一声」的小工具，不该占半个浏览器。
+**919 KB / 22 MB 内存 / 瞬间启动** —— 一个「偶尔叮一声」的小工具，不该占半个浏览器。
 
 > 第一次运行 Windows 会拦一下（exe 未签名）：**更多信息 → 仍要运行**。
 > 没有证书是因为一张代码签名证书一年几百刀，个人项目买不起。源码在 `src/`，不放心可以自己编。
@@ -77,7 +77,7 @@ NudgeBell 不告诉你时间。每响一次，间隔当场重新抽一次。你�
 
 ## 自己编
 
-需要 MinGW-w64（g++ 11+），执行 `./build.sh` 得到 916 KB 的 exe。
+需要 MinGW-w64（g++ 11+），执行 `./build.sh` 得到 919 KB 的 exe。
 
 纯 Win32 + GDI+ 手写，C++17 静态链接，不依赖 .NET / Qt / Electron / 浏览器内核。
 实现细节、12 种音色怎么合成、67 项自检都测了什么 → [**docs/tech.md**](docs/tech.md)
