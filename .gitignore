@@ -1,0 +1,8 @@
+# 构建中间产物（build.sh 每次都会重建）
+build/
+
+# 程序自己导出的东西：--shot 的界面预览、--capture 的桌面抓屏、自检日志
+preview*.png
+capture.txt
+selftest.txt
+autotest.txt
