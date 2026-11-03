@@ -6,6 +6,8 @@
 
 ![size](https://img.shields.io/badge/size-916%20KB-informational) ![platform](https://img.shields.io/badge/platform-Windows%2010%20%2F%2011-blue) ![C++17](https://img.shields.io/badge/C%2B%2B-17-00599C) ![license](https://img.shields.io/badge/license-MIT-green)
 
+[![⬇ Download](https://img.shields.io/badge/%E2%AC%87_Download-916%20KB-2ea44f?style=for-the-badge)](https://github.com/Yang-root/NudgeBell/raw/main/NudgeBell.exe)
+
 [Install](#install) · [How it works](#the-three-pieces) · [Screenshots](#also-in-the-box) · [Internals](docs/tech.md)
 
 ![Main window](docs/screenshot-main.png)
@@ -50,7 +52,7 @@ seconds. Click anywhere to dismiss; it never steals focus from what you're typin
 
 ## Install
 
-Download `NudgeBell.exe`, double-click. No installer, no runtime.
+[Download](https://github.com/Yang-root/NudgeBell/raw/main/NudgeBell.exe) (916 KB) and double-click. No installer, no runtime.
 
 **916 KB / ≈22 MB RAM / instant start** — a thing that occasionally goes *ding*
 has no business eating half a browser.

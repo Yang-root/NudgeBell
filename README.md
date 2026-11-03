@@ -6,6 +6,8 @@
 
 ![size](https://img.shields.io/badge/size-916%20KB-informational) ![platform](https://img.shields.io/badge/platform-Windows%2010%20%2F%2011-blue) ![C++17](https://img.shields.io/badge/C%2B%2B-17-00599C) ![license](https://img.shields.io/badge/license-MIT-green)
 
+[![⬇ 下载 NudgeBell.exe](https://img.shields.io/badge/%E2%AC%87_%E4%B8%8B%E8%BD%BD-916%20KB-2ea44f?style=for-the-badge)](https://github.com/Yang-root/NudgeBell/raw/main/NudgeBell.exe)
+
 [装起来](#装) · [它怎么工作](#三个东西) · [截图](#还有什么) · [技术细节](docs/tech.md)
 
 ![主界面](docs/screenshot-main.png)
@@ -41,7 +43,7 @@ NudgeBell 不告诉你时间。每响一次，间隔当场重新抽一次。你�
 
 ## 装
 
-下载 `NudgeBell.exe`，双击。没有安装包，没有运行时。
+[点这里下载](https://github.com/Yang-root/NudgeBell/raw/main/NudgeBell.exe)（916 KB），双击就行。没有安装包，没有运行时。
 
 **916 KB / 22 MB 内存 / 瞬间启动** —— 一个「偶尔叮一声」的小工具，不该占半个浏览器。
 
