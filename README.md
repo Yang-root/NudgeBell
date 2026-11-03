@@ -1,15 +1,31 @@
-# NudgeBell · 回神
+<p align="center">
+  <a href="README_EN.md">English</a> &nbsp;|&nbsp; <b>简体中文</b>
+</p>
 
-**简体中文** ｜ [English](README_EN.md)
+<h1 align="center">NudgeBell · 回神</h1>
 
-![size](https://img.shields.io/badge/size-916%20KB-informational)
-![platform](https://img.shields.io/badge/platform-Windows%2010%20%2F%2011-blue)
-![license](https://img.shields.io/badge/license-MIT-green)
+<p align="center">
+  <b>一个不知道什么时候会响的专注提示音。</b><br>
+  走神的那一秒，把你拽回来。
+</p>
 
-> **一个不知道什么时候会响的专注提示音。**
-> 走神的那一秒，把你拽回来。
+<p align="center">
+  <img src="https://img.shields.io/badge/size-916%20KB-informational" alt="size">
+  <img src="https://img.shields.io/badge/platform-Windows%2010%20%2F%2011-blue" alt="platform">
+  <img src="https://img.shields.io/badge/C%2B%2B-17-00599C" alt="cpp">
+  <img src="https://img.shields.io/badge/license-MIT-green" alt="license">
+</p>
 
-![主界面](docs/screenshot-main.png)
+<p align="center">
+  <a href="#装">装起来</a> &nbsp;·&nbsp;
+  <a href="#三个东西">它怎么工作</a> &nbsp;·&nbsp;
+  <a href="#还有什么">截图</a> &nbsp;·&nbsp;
+  <a href="docs/tech.md">技术细节</a>
+</p>
+
+<p align="center">
+  <img src="docs/screenshot-main.png" alt="NudgeBell 主界面" width="430">
+</p>
 
 ---
 

@@ -1,15 +1,31 @@
-# NudgeBell
+<p align="center">
+  <b>English</b> &nbsp;|&nbsp; <a href="README.md">简体中文</a>
+</p>
 
-[简体中文](README.md) ｜ **English**
+<h1 align="center">NudgeBell</h1>
 
-![size](https://img.shields.io/badge/size-916%20KB-informational)
-![platform](https://img.shields.io/badge/platform-Windows%2010%20%2F%2011-blue)
-![license](https://img.shields.io/badge/license-MIT-green)
+<p align="center">
+  <b>A focus bell that never tells you when it'll ring.</b><br>
+  It catches you the second you drift.
+</p>
 
-> **A focus bell that never tells you when it'll ring.**
-> It catches you the second you drift.
+<p align="center">
+  <img src="https://img.shields.io/badge/size-916%20KB-informational" alt="size">
+  <img src="https://img.shields.io/badge/platform-Windows%2010%20%2F%2011-blue" alt="platform">
+  <img src="https://img.shields.io/badge/C%2B%2B-17-00599C" alt="cpp">
+  <img src="https://img.shields.io/badge/license-MIT-green" alt="license">
+</p>
 
-![Main window](docs/screenshot-main.png)
+<p align="center">
+  <a href="#install">Install</a> &nbsp;·&nbsp;
+  <a href="#the-three-pieces">How it works</a> &nbsp;·&nbsp;
+  <a href="#also-in-the-box">Screenshots</a> &nbsp;·&nbsp;
+  <a href="docs/tech.md">Internals</a>
+</p>
+
+<p align="center">
+  <img src="docs/screenshot-main.png" alt="NudgeBell main window" width="430">
+</p>
 
 ---
 
